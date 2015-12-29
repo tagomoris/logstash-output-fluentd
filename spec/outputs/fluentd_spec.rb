@@ -3,16 +3,14 @@ require "logstash/devutils/rspec/spec_helper"
 require "logstash/codecs/plain"
 require "logstash/event"
 
-require "logstash/outputs/treasure_data"
+require "logstash/outputs/fluentd"
 
-describe LogStash::Outputs::TreasureData do
+describe LogStash::Outputs::Fluentd do
   let(:sample_event) { LogStash::Event.new }
-  let(:output) { LogStash::Outputs::TreasureData.new(config) }
+  let(:output) { LogStash::Outputs::Fluentd.new(config) }
   let(:config) do
     {
-      "apikey" => "0/xxxxxxxxxxxxxxxxx",
-      "database" => "logstash",
-      "table" => "spec",
+      "host" => "127.0.0.1"
     }
   end
 

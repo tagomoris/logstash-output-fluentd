@@ -1,4 +1,4 @@
-# Logstash Plugin for Tresure Data service
+# Logstash Plugin for Fluentd
 
 [![Build
 Status](http://build-eu-00.elastic.co/view/LS%20Plugins/view/LS%20Outputs/job/logstash-plugin-output-example-unit/badge/icon)](http://build-eu-00.elastic.co/view/LS%20Plugins/view/LS%20Outputs/job/logstash-plugin-output-example-unit/)

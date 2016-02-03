@@ -11,8 +11,6 @@ require "msgpack"
 
 require_relative "./fluentd/version"
 
-# Logstash output plugin to send data to Treasure Data service.
-
 class LogStash::Event
   def to_msgpack(packer=nil)
     # LogStash objects (ex: LogStash::Timestamp) are impossible to serialize by msgpack
@@ -36,23 +34,15 @@ class LogStash::Outputs::Fluentd < LogStash::Outputs::Base
   config :tag, validate: :string, default: 'logstash'
   # config :use_ssl, validate: :boolean, default: false # TODO: true
 
-  config :connect_timeout, validate: :number, default: nil
-  config :read_timeout, validate: :number, default: nil
-  config :send_timeout, validate: :number, default: nil
+  # config :connect_timeout, validate: :number, default: nil
+  # config :read_timeout, validate: :number, default: nil
+  # config :send_timeout, validate: :number, default: nil
 
   config :flush_size, validate: :number, default: 50    # 50 records
   config :flush_interval, validate: :number, default: 5 # 5 seconds
 
   public
   def register
-    client_opts = {
-      ssl: @use_ssl,
-      connect_timeout: @connect_timeout,
-      read_timeout: @read_timeout,
-      send_timeout: @send_timeout
-    }
-    # @client = TreasureData::Client.new(@apikey.value, client_opts)
-
     buffer_initialize(
       max_items: @flush_size,
       max_interval: @flush_interval,

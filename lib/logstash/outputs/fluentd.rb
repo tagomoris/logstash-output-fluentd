@@ -16,7 +16,7 @@ class LogStash::Event
     # LogStash objects (ex: LogStash::Timestamp) are impossible to serialize by msgpack
     begin
       @data.reject{|a,b| a == TIMESTAMP }.to_msgpack
-    rescue ArgumentError => e
+    rescue ArgumentError, NoMethodError
       LogStash::Json.load(@data.to_json).to_msgpack
     end
   end

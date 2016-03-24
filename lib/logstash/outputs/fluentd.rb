@@ -9,8 +9,6 @@ require "socket"
 
 require "msgpack"
 
-require_relative "./fluentd/version"
-
 class LogStash::Event
   def to_msgpack(packer=nil)
     # LogStash objects (ex: LogStash::Timestamp) are impossible to serialize by msgpack
@@ -40,6 +38,9 @@ class LogStash::Outputs::Fluentd < LogStash::Outputs::Base
 
   config :flush_size, validate: :number, default: 50    # 50 records
   config :flush_interval, validate: :number, default: 5 # 5 seconds
+
+  require 'rubygems'
+  VERSION = Gem::Specification.load(File.expand_path('../../../../logstash-output-fluentd.gemspec', __FILE__)).version
 
   public
   def register

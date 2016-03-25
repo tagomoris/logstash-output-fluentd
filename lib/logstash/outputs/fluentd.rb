@@ -15,7 +15,7 @@ class LogStash::Event
     begin
       @data.reject{|a,b| a == TIMESTAMP }.to_msgpack
     rescue ArgumentError, NoMethodError
-      LogStash::Json.load(@data.to_json).to_msgpack
+      LogStash::Json.load(LogStash::Json.dump(@data)).to_msgpack
     end
   end
 end

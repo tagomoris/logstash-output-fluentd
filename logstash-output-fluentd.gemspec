@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'logstash-output-fluentd'
-  s.version     = "0.9.2"
+  s.version     = "1.0.0"
   s.licenses    = ["Apache License (2.0)"]
   s.summary     = "Logstash plugin to forward data to fluentd nodes"
   s.description = "This gem is a logstash plugin to forward data from logstash to fluentd. This gem is not a stand-alone program."

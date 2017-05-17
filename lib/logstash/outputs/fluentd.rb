@@ -5,20 +5,9 @@ require "logstash/json"
 
 require "stud/buffer"
 require "stud/try"
+
 require "socket"
-
 require "msgpack"
-
-class LogStash::Event
-  def to_msgpack(packer=nil)
-    # LogStash objects (ex: LogStash::Timestamp) are impossible to serialize by msgpack
-    begin
-      @data.reject{|a,b| a == TIMESTAMP }.to_msgpack
-    rescue ArgumentError, NoMethodError
-      LogStash::Json.load(LogStash::Json.dump(@data)).to_msgpack
-    end
-  end
-end
 
 class LogStash::Outputs::Fluentd < LogStash::Outputs::Base
   include Stud::Buffer
@@ -42,6 +31,15 @@ class LogStash::Outputs::Fluentd < LogStash::Outputs::Base
   require 'rubygems'
   VERSION = Gem::Specification.load(File.expand_path('../../../../logstash-output-fluentd.gemspec', __FILE__)).version
 
+  def convert_from_event_to_msgpack(event)
+    entry = [(event.timestamp.to_i || Time.now.to_i), event.to_hash]
+    begin
+      entry.to_msgpack
+    rescue ArgumentError, NoMethodError
+      LogStash::Json.load(LogStash::Json.dump(entry)).to_msgpack
+    end
+  end
+
   public
   def register
     buffer_initialize(
@@ -55,8 +53,7 @@ class LogStash::Outputs::Fluentd < LogStash::Outputs::Base
   def receive(event)
     @logger.debug "receive a event"
 
-    entry = [(event.timestamp.to_i || Time.now.to_i), event]
-    buffer_receive(entry.to_msgpack)
+    buffer_receive(convert_from_event_to_msgpack(event))
 
     @logger.debug "buffered a event"
   end

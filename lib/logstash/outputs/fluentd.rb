@@ -12,6 +12,8 @@ require "msgpack"
 class LogStash::Outputs::Fluentd < LogStash::Outputs::Base
   include Stud::Buffer
 
+  concurrency :shared
+
   config_name "fluentd"
 
   config :host, validate: :string, required: true
